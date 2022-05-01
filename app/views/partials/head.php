@@ -12,7 +12,7 @@
       crossorigin="anonymous"
     />
     <!-- Custom CSS -->
-    <link href="global.css" rel="stylesheet" />
+    <link href="public/css/global.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="public/images/favicon.ico" />
   </head>
 
