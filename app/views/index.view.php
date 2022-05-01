@@ -1,62 +1,74 @@
-<?php require 'partials/head.php' ?>
-
-<section class="h-100 gradient-form" style="background-color: #eee;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-xl-10">
-        <div class="card rounded-3 text-black">
-          <div class="row g-0">
-            <div class="col-lg-6">
-              <div class="card-body p-md-5 mx-md-4">
-
-                <div class="text-center">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                    style="width: 185px;" alt="logo">
-                  <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
-                </div>
-
-                <form>
-                  <p>Please login to your account</p>
-
-                  <div class="form-outline mb-4">
-                    <input type="email" id="form2Example11" class="form-control"
-                      placeholder="Phone number or email address" />
-                    <label class="form-label" for="form2Example11">Username</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="password" id="form2Example22" class="form-control" />
-                    <label class="form-label" for="form2Example22">Password</label>
-                  </div>
-
-                  <div class="text-center pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log
-                      in</button>
-                    <a class="text-muted" href="#!">Forgot password?</a>
-                  </div>
-
-                  <div class="d-flex align-items-center justify-content-center pb-4">
-                    <p class="mb-0 me-2">Don't have an account?</p>
-                    <button type="button" class="btn btn-outline-danger">Create new</button>
-                  </div>
-
-                </form>
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required Meta Tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- Custom CSS -->
+    <link href="global.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <title>Krizia's Krystals - Login Page</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row mt-4">
+        <div class="col text-center">
+          <img
+            src="../images/crystal-logo.png"
+            alt="crystal-logo"
+            width="100"
+          />
+          <span class="store-font align-middle">Krizia's Krystals</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 m-auto p-4">
+          <div class="rounded p-4 shadow bg-white">
+            <form action="#!" method="GET">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="user"
+                  placeholder="Username:"
+                  required
+                />
+                <label for="user">Username:</label>
               </div>
-            </div>
-            <div class="col-lg-6 d-flex align-items-center gradient-custom">
-              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                <h4 class="mb-4">We are more than just a company</h4>
-                <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              <div class="form-floating mt-4">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="pass"
+                  placeholder="Password:"
+                  required
+                />
+                <label for="pass">Password:</label>
               </div>
-            </div>
+              <div class="d-grid col-6 mt-4 m-auto">
+                <button type="submit" class="btn btn-outline-dark">
+                  Log In
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+      <div class="row justify-content-center">
+        <div class="col text-end my-auto">
+          <span>Not a member?</span>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger">Register</button>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
-
-<?php require 'partials/closing.php' ?>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap");
+
+span.store-font {
+  font-family: "Nanum Brush Script", cursive;
+  font-size: 30pt;
+  margin-top: auto;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-image: linear-gradient(rgb(255, 255, 255), rgb(156, 135, 194));
+}
