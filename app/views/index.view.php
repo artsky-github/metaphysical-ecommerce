@@ -13,7 +13,7 @@
     />
     <!-- Custom CSS -->
     <link href="global.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico" />
     <title>Krizia's Krystals - Login Page</title>
   </head>
   <body>
@@ -21,7 +21,7 @@
       <div class="row mt-4">
         <div class="col text-center">
           <img
-            src="../images/crystal-logo.png"
+            src="public/images/crystal-logo.png"
             alt="crystal-logo"
             width="100"
           />

@@ -13,7 +13,7 @@
     />
     <!-- Custom CSS -->
     <link href="global.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="public/images/favicon.ico" />
     <title>Krizia's Krystals - Home Page</title>
   </head>
   <body>
@@ -25,7 +25,7 @@
           >
             <a class="navbar-brand mx-4" href="#!">
               <img
-                src="../images/crystal-logo.png"
+                src="public/images/crystal-logo.png"
                 alt="crystal-logo"
                 width="100"
               />
@@ -35,19 +35,19 @@
               class="navbar-nav navbar-collapse justify-content-end gap-3 mx-4"
             >
               <a class="nav-link active" aria-current="page" href="#!">
-                <img src="../images/home-icon.png" alt="home-icon" width="30" />
+                <img src="public/images/home-icon.png" alt="home-icon" width="30" />
                 <span>Home</span>
               </a>
               <a class="nav-link" href="#!">
                 <img
-                  src="../images/account-icon.png"
+                  src="public/images/account-icon.png"
                   alt="account-icon"
                   width="30"
                 />
                 <span>Account</span>
               </a>
               <a class="nav-link" href="#!">
-                <img src="../images/cart-icon.png" alt="cart-icon" width="30" />
+                <img src="public/images/cart-icon.png" alt="cart-icon" width="30" />
                 <span>Cart</span>
               </a>
               <form class="gap-3 navbar-nav">
