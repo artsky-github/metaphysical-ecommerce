@@ -6,10 +6,23 @@ span.store-font {
   margin-top: auto;
 }
 
+button.active {
+  background-color: #212529 !important;
+}
+
+button.nav-link:hover {
+  color: #212529;
+}
+
+button.nav-link {
+  color: #6c757d;
+}
+
 html {
   height: 100%;
 }
 
 body {
   background-image: linear-gradient(rgb(255, 255, 255), rgb(156, 135, 194));
+  background-attachment: fixed;
 }

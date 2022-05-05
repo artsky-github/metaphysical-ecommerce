@@ -13,13 +13,14 @@
       <div class="row">
         <div class="col-md-4 m-auto p-4">
           <div class="rounded p-4 shadow bg-white">
-            <form action="#!" method="GET">
+            <form action="register" method="POST">
               <div class="row">
                 <div class="col-6 form-floating">
                   <input
                     type="text"
                     class="form-control"
                     id="fname"
+                    name="fname"
                     placeholder="First Name:"
                     required
                   />
@@ -30,6 +31,7 @@
                     type="text"
                     class="form-control"
                     id="lname"
+                    name="lname"
                     placeholder="Last Name:"
                     required
                   />
@@ -41,6 +43,7 @@
                   type="text"
                   class="form-control"
                   id="user"
+                  name="username"
                   placeholder="Username:"
                   required
                 />
@@ -51,6 +54,7 @@
                   type="password"
                   class="form-control"
                   id="pass"
+                  name="password"
                   placeholder="Password"
                   required
                 />
@@ -61,6 +65,7 @@
                   type="email"
                   class="form-control"
                   id="email"
+                  name="email"
                   placeholder="Email:"
                   required
                 />
