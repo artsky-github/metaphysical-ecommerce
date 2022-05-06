@@ -18,4 +18,7 @@ class Session {
         session_start();
         session_destroy();
     }
+    public static function flash($name,$message){
+        setcookie($name,$message,time()+5);
+    }
 }

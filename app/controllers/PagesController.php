@@ -2,6 +2,8 @@
 
 
 namespace App\Controllers;
+use App\Helpers\{Session};
+
 use App\Core\App;
 
 class PagesController{
@@ -18,7 +20,10 @@ class PagesController{
         return view('home',compact('products'));    
     }
     public function orders(){
-        
+        session_start();
+        $id = Session::get('user')['id'];
+        $all_orders = App::get("database")->getOrders($id);
+        return view('orders',compact('all_orders'));
     }
     public function cart(){
         return view('cart');

@@ -17,5 +17,7 @@ foreach($products["recommended"] as $item){
     require('components/products.php');
 }
 ?>
+ <?php require 'components/flash.php' ?>
+
 <script src="public/js/cart.js"></script>
 <?php require 'partials/closing.php' ?>

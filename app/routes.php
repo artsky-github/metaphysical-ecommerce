@@ -13,7 +13,9 @@ $router->post('register','UserController@store');
 
 $router->get('home','PagesController@home');
 $router->get('orders','PagesController@orders');
+
 $router->get('cart','PagesController@cart');
+$router->post('cart','OrderController@store');
 
 $router->get('products','PagesController@products');
 

@@ -87,6 +87,36 @@ class QueryBuilder{
             return null;
         }
     }
+    public function getOrders($id){
+        $sql = "SELECT * from Orders where person_id = :person_id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":person_id",$id);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function addOrder($current_user_id,$data){
+        $order = [
+            "person_id" => $current_user_id,
+            "total_price" => $data["total-price"],
+            "ordered_at" => date("Y-m-d H:i:s")
+        ];
+        $order = $this->insert('Orders',$order);
+
+        // var_dump($data);
+        // die();
+        
+        foreach($data['products'] as $product){
+            $ordered_products = [
+                "order_id" => $order["id"],
+                "product_id" => $product["id"],
+                "quantity" => $product["quantity"]
+            ];
+            $this->pdo->beginTransaction();
+            $this->insertMany("Ordered_Products",$ordered_products);
+            $this->pdo->commit();
+        }
+        
+    }
     public function insert($table,$parameters){
         $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)"
             ,$table
@@ -99,12 +129,28 @@ class QueryBuilder{
             $retrieveQuery = $this->pdo->prepare($retrieve);
             $query->execute($parameters);
             $retrieveQuery->execute();
-            $obj = $retrieveQuery->fetch(\PDO::FETCH_ASSOC);
+            $obj = $retrieveQuery->fetch(\PDO::FETCH_ASSOC);        
             return $obj;
         }
         catch (\PDOException $e){
+            return -1;
+        }
+    }
+    public function insertMany($table,$parameters){
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)"
+            ,$table
+            ,implode(',',array_keys($parameters))
+            ,implode(', ',array_map(function($col){return ":${col}";},array_keys($parameters)))
+        );
+        try{
+            $query = $this->pdo->prepare($sql);
+            $query->execute($parameters);
+            return;
+        }
+        catch(\PDOException $e){
             var_dump($e);
         }
+
     }
     
     public function addUser($data){
