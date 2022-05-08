@@ -47,10 +47,11 @@
                   <button type="submit" class="btn btn-outline-success btn">
                     Search
                   </button>
-                </div>
+
                 
               </form>
               <a class="btn btn-danger" href="logout">Logout</a>
+
             </div>
           </nav>
         </div>
