@@ -7,10 +7,7 @@ class QueryBuilder{
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
-    }
-
-
-   
+    }   
     public function getPopularAndRecommended(){
         $sql_reco = "SELECT * FROM Products ORDER BY RAND() LIMIT 5";
         $reco_query = $this->pdo->prepare($sql_reco);
@@ -44,6 +41,23 @@ class QueryBuilder{
         $query->execute();
         return $query->fetchAll();
     }
+    public function addProduct($data){
+        $this->insert("Products",$data);
+    }
+    public function removeProduct($sku){
+        $sql = "DELETE FROM Products WHERE sku = :sku";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":sku",$sku);
+        $query->execute();
+    }
+    public function updateProduct($quantity,$sku){
+        $sql = "UPDATE Products SET total_quantity = :total_quantity  WHERE sku = :sku";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":sku",$sku);
+        $query->bindValue(":total_quantity",$quantity);
+        $query->execute();
+    }
+
     public function getByCategoryAndName($name,$category=null){
         $sql = "SELECT * FROM Products WHERE name LIKE :name and category = :category";
         $query = $this->pdo->prepare($sql);
@@ -87,6 +101,13 @@ class QueryBuilder{
             return null;
         }
     }
+    public function getAllOrders(){
+        $sql = "SELECT * from Orders";
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function getOrders($id){
         $sql = "SELECT * from Orders where person_id = :person_id";
         $query = $this->pdo->prepare($sql);
@@ -95,16 +116,26 @@ class QueryBuilder{
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
     public function addOrder($current_user_id,$data){
+        
+        $state = $data["state"];
+        $city = $data["city"];
+        $street_name = $data["street_name"];
+        $house_number = $data["house_number"];
+        $zip_code = $data["zip_code"];
+
+        $sql = "INSERT INTO Customers (person_id, state, city, street_name, house_number, zip_code) 
+                        VALUES($current_user_id,'$state', '$city', '$street_name', $house_number, '$zip_code') 
+                        ON DUPLICATE KEY UPDATE state='$state', city='$city', street_name='$street_name', 
+                        house_number=$house_number, zip_code='$zip_code'";
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute();     
         $order = [
             "person_id" => $current_user_id,
             "total_price" => $data["total-price"],
-            "ordered_at" => date("Y-m-d H:i:s")
         ];
-        $order = $this->insert('Orders',$order);
-
-        // var_dump($data);
-        // die();
         
+        $order = $this->insert('Orders',$order);
         foreach($data['products'] as $product){
             $ordered_products = [
                 "order_id" => $order["id"],
@@ -113,10 +144,30 @@ class QueryBuilder{
             ];
             $this->pdo->beginTransaction();
             $this->insertMany("Ordered_Products",$ordered_products);
+            $this->addMetaProduct($product["id"],$product["quantity"]);
+            $this->updateProductById($product["id"],$product["quantity"]);
             $this->pdo->commit();
         }
         
     }
+    public function addMetaProduct($product_id,$quantity){
+        $sql = "INSERT INTO Meta_Products (product_id,sold_count) 
+                VALUES($product_id,$quantity) 
+                ON DUPLICATE KEY UPDATE sold_count=sold_count+$quantity";
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+
+    }   
+
+    public function updateProductById($id,$quantity){
+    
+        $sql = "UPDATE Products SET total_quantity = total_quantity - :total_quantity  WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":id",$id);
+        $query->bindValue(":total_quantity",$quantity);
+        $query->execute();
+    }
+
     public function insert($table,$parameters){
         $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)"
             ,$table
@@ -126,14 +177,14 @@ class QueryBuilder{
         $retrieve = sprintf("SELECT * from {$table} WHERE id = LAST_INSERT_ID()");
         try{
             $query = $this->pdo->prepare($sql);
-            $retrieveQuery = $this->pdo->prepare($retrieve);
+            $retrieveQuery = $this->pdo->prepare($retrieve);  
             $query->execute($parameters);
             $retrieveQuery->execute();
             $obj = $retrieveQuery->fetch(\PDO::FETCH_ASSOC);        
             return $obj;
         }
         catch (\PDOException $e){
-            return -1;
+            var_dump($e->getMessage());
         }
     }
     public function insertMany($table,$parameters){
@@ -152,7 +203,67 @@ class QueryBuilder{
         }
 
     }
-    
+
+    public function addEmployee($user_data,$employee_data){
+        $obj = $this->insert("Persons",$user_data);
+        $employee_data["person_id"] = $obj["id"];
+        $this->insert("Employees",$employee_data);
+    }
+
+  
+
+    public function getAllCustomers(){
+        $sql = "SELECT * FROM Persons WHERE type = 0";
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public function removeCustomer($id){
+        $sql = "DELETE FROM Persons WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":id",$id);
+        $query->execute();
+
+        $sql = "DELETE FROM Customers WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":id",$id);
+        $query->execute();
+
+    }   
+    public function removeEmployee($id){
+        $sql = "DELETE FROM Persons WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":id",$id);
+        $query->execute();
+
+        $sql = "DELETE FROM Employees WHERE person_id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->bindValue(":id",$id);
+        $query->execute();
+    }
+
+    public function getAllEmployees(){
+        $sql = "SELECT * FROM Employees LEFT JOIN Persons on Employees.person_id = Persons.id";
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function getProductsSold(){
+        // $sql = "SELECT * FROM Ordered_Products
+		//         LEFT JOIN Products on Ordered_Products.product_id = Products.id 
+		//         LEFT JOIN Meta_Products on Meta_Products.product_id = Ordered_Products.product_id";
+        
+        $sql = "SELECT * FROM Meta_Products
+        LEFT JOIN Ordered_Products on Ordered_Products.product_id = Meta_Products.product_id
+        LEFT JOIN Products on Meta_Products.product_id = Products.id";
+        
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function addUser($data){
         return $this->insert("Persons",$data);
     }

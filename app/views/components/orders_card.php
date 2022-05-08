@@ -12,7 +12,7 @@
         <tbody>
         <tr id="">
             <td><?= $order['id'] ?></td>
-            <td><?= $order['total_price'] ?></td>
+            <td>$ <?= $order['total_price'] ?></td>
             <td><?= $order['ordered_at'] ?></td>
         </tr>
         </tbody>

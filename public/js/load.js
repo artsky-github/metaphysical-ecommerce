@@ -1,16 +1,4 @@
 window.onload = ()=>{
-    const flash = document.getElementById("flash");
-    const flash_content = document.getElementById("flash-message")
-    if(getCookie("Error") != null){
-        flash.classList.remove("visually-hidden");
-        flash.classList.add("alert alert-danger")
-        flash_content.innerText = getCookie("Error");
-        setTimeout(()=>{
-            flash.classList.add("visually-hidden");
-            flash_content.innerText='';
-        },5000)
-    }
-
     const cart = JSON.parse(localStorage.getItem("cart") || "[]")
     const cartTotal = cart.reduce((a,item) => a+(item.quantity*item.price),0) 
     const total = document.getElementById("total");
@@ -53,7 +41,11 @@ window.onload = ()=>{
             add.classList.add('p-0');
             add.style.border = "none";
             add.style.backgroundColor = "transparent";
-    
+            if(item.quantity >= item.max_count){
+                add.disabled =  true;
+            }
+
+
             const remove = document.createElement('button');
             remove.id = `add-${item.id}`
             remove.onclick = removeQuantity;
@@ -104,30 +96,14 @@ window.onload = ()=>{
     });  
 
 }
-function getCookie(name) {
-    var dc = document.cookie;
-    var prefix = name + "=";
-    var begin = dc.indexOf("; " + prefix);
-    if (begin == -1) {
-        begin = dc.indexOf(prefix);
-        if (begin != 0) return null;
-    }
-    else
-    {
-        begin += 2;
-        var end = document.cookie.indexOf(";", begin);
-        if (end == -1) {
-        end = dc.length;
-        }
-    }
-    return decodeURI(dc.substring(begin + prefix.length, end));
-} 
+
 function addQuantity(e){
     const cart = JSON.parse(localStorage.getItem("cart") || "[]")
     const id = e.target.parentNode.id.split('-')[1]
 
     const cartTotal = cart.reduce((a,item) => a+(item.quantity*item.price),0) 
     const item = cart.find((product) => product.id == id)
+    const add_button = document.getElementById(`add-${id}`);
 
 
     const total = document.getElementById("total");
@@ -136,8 +112,11 @@ function addQuantity(e){
     const quantity = e.target.parentNode.parentNode.parentNode.firstChild;
     quantity.textContent = parseInt(quantity.innerText) + 1;
     const newCart = cart.map((item) => {
-        if(item.id == id){
+        if(item.id == id && item.quantity <= item.max_count){
             item.quantity++;
+            if(item.quantity >= item.max_count){
+                add_button.disabled = true;
+            }
         }
         return item;
     })
@@ -146,8 +125,14 @@ function addQuantity(e){
 
 function removeQuantity(e){
     const container = e.target.parentNode.parentNode.parentNode.parentNode;
-    // console.log(container);
+
+
+
     const id = e.target.parentNode.id.split('-')[1]
+
+    const add_button = document.getElementById(`add-${id}`);
+    
+
     const cart = JSON.parse(localStorage.getItem("cart") || "[]")
 
     const cartTotal = cart.reduce((a,item) => a+(item.quantity*item.price),0) 
@@ -160,11 +145,16 @@ function removeQuantity(e){
     total.innerText = totalNow <= 0 ? "$ 0" : "$ " + totalNow;
 
     const quantity = e.target.parentNode.parentNode.parentNode.firstChild;
-    quantity.innerText = parseInt(quantity.innerText) > 0 ? (parseInt(quantity.innerText) - 1) : "0";
+    quantity.innerText = parseInt(quantity.innerText) > 0? (parseInt(quantity.innerText) - 1) : "0";
     const newCart = cart.map((item) => {
         if(item.id == id){
+
             if(item.quantity > 0){
                 item.quantity--;
+                if(item.quantity < item.max_count){
+                    add_button.disabled = false;
+                }
+
                 return item;
             }
             

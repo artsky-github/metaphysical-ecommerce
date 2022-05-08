@@ -2,27 +2,27 @@
       <div id="sku-<?=$item['id']?>" class="visually-hidden"> <?=$item['sku']?> </div>
       <img
         class="card-img-top border-bottom"
-        src="https://i.picsum.photos/id/254/200/200.jpg?hmac=wM9u9N0tgdWKFIr8MxBLr8rLoV0JjUUKLk32XFV8agQ"
-        alt="product-amethyst"
+        src="<?=$item["image"] ?>"
+        alt="product-amethyst" height=330
       />
       <div class="card-body border-bottom">
-        <a
-          data-bs-toggle="collapse"
-          href="#collapsableContent-<?=$item["id"] ?>"
-          style="text-decoration: none"
-        >
-          <h5 id="name-<?=$item["id"] ?>"><?= $item['name']?></h5>
-        </a>
-        <p id="price-<?=$item["id"] ?>"class="card-text">$<?= $item['price']?></p>
+        <h5 id="name-<?=$item["id"] ?>"><?= $item['name']?></h5>
+        <div class="row">
+          <div class="col">
+            <span class="card-text"><?= $item["category"] ?></span>
+          </div>
+          <div class="col text-end">
+            <span id="price-<?=$item["id"] ?>"class="card-text" class="card-text">$<?= $item['price']?></span>
+          </div>
+        </div>
       </div>
-      <div class="collapse" id="collapsableContent-<?=$item["id"] ?>">
-        <div class="card-body border-bottom">
+      <div class="card-body border-bottom" style="height: 100px; overflow-y: auto">
           <p class="card-text" id="description-<?=$item["id"] ?>">
           <?= $item['description']?>
           </p>
-        </div>
       </div>
       <div class="card-body d-flex justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="addToCart(event)">Add to Cart</button>
+        <button id="max-<?=$item["total_quantity"] ?>"type="button" class="btn btn-primary" onclick="addToCart(event)">Add to Cart</button>
       </div>
     </div>
+

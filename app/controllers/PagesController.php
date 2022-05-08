@@ -38,11 +38,50 @@ class PagesController{
             $products = App::get("database")->getByName($name);
         }
         else if($name != "" && $category != "all"){
-            $products = App::get("database")->getByCategoryAndName($name);
+            $products = App::get("database")->getByCategoryAndName($name,$category);
         }else{
             $products = App::get("database")->getAll($name);
         }
+        if(count($products) == 0){
+            Session::flash("Error","No products found.");
+            redirect('/home');
+        }
         return view('products',compact('products'));
     }
+
+
+    public function employee(){
+        $products = App::get("database")->getAll();
+        return view("employee",compact('products'));
+    }
+    public function admin(){
+        $orders = App::get("database")->getAllOrders();
+        $customers = App::get("database")->getAllCustomers();
+        return view("admin",compact('orders','customers'));
+
+    }
+    public function owner(){
+        $employees = array_map(function($employee) { 
+        
+            return array_filter($employee,function($val,$key){
+                if($key == "person_id" || $key == "fname" || $key == "lname" || $key == "email"){
+                    return array($key=>$val);
+                }
+            },ARRAY_FILTER_USE_BOTH);
+        },App::get("database")->getAllEmployees());
+
+        $products_sold = array_map(function($product) {
+            return array_filter($product,function($val,$key){
+                if($key == "sku" || $key == "name" || $key == "category" || $key == "sold_count"){
+                    return array($key=>$val);
+                }
+            },ARRAY_FILTER_USE_BOTH);
+        },App::get("database")->getProductsSold());
+        
+
+
+        return view("owner",compact('employees','products_sold'));
+    }
+
 
 }

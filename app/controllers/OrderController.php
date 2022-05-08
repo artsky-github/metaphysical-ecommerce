@@ -17,7 +17,7 @@ class OrderController{
         }else{
             App::get("database")->addOrder($current_user,$_POST);
             Session::flash("Success","Order has been recieved.");
-            redirect('home');
+            redirect('/home');
         }
     
     }

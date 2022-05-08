@@ -15,6 +15,15 @@ window.onload = () =>{
             flash_content.innerText='';
         },5000)
     }
+    if(getCookie("Error") != null){
+        flash.classList.remove("visually-hidden");
+        flash.classList.add("alert-danger")
+        flash_content.innerText = getCookie("Error");
+        setTimeout(()=>{
+            flash.classList.add("visually-hidden");
+            flash_content.innerText='';
+        },5000)
+    }
 
     const currentCart = JSON.parse(localStorage.getItem("cart") || "[]")
     
@@ -42,6 +51,9 @@ function getCookie(name) {
     return decodeURI(dc.substring(begin + prefix.length, end));
 } 
 function addToCart(e){
+    const button = e.target;
+    const max_quantity = e.target.id.split('-')[1];
+
     const currentCart = JSON.parse(localStorage.getItem("cart") || "[]")
     const item = e.target.parentNode.parentNode;
     const values = Array.from(item.querySelectorAll(`#sku-${item.id},#name-${item.id},#price-${item.id},#description-${item.id}`),item => item.textContent.trim());
@@ -51,7 +63,8 @@ function addToCart(e){
         "name" : values[1],
         "price" : parseInt(values[2].split('$')[1]),
         "description" : values[3],
-        "quantity" : 1
+        "quantity" : 1,
+        "max_count" : parseInt(max_quantity)
     }
     
     let notExists = currentCart.filter(product => product.id == item.id);
@@ -59,6 +72,9 @@ function addToCart(e){
         if(product.id == item.id){
             product.quantity++
         }
+        if(max_quantity - product.quantity <= 0){
+            button.disabled = true;
+        }   
         return product;
     })
     localStorage.setItem("cart",JSON.stringify(newCart));

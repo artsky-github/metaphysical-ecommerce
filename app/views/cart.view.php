@@ -2,19 +2,7 @@
 <?php require 'partials/head.php' ?>
 <div class="container-fluid">
       <!-- This content contains the title and logo of the website. -->
-      <div class="row mt-4">
-        <div class="col text-center">
-          <a href="home" class="text-decoration-none text-dark">
-          <img
-            src="public/images/crystal-logo.png"
-            alt="crystal-logo"
-            width="100"
-          />
-          <span class="store-font align-middle">Krizia's Krystals</span>
-          </a>
-        
-        </div>
-      </div>
+      <?php require 'components/mini.php' ?>
       <!-- End of title and logo for customer. -->
       <!-- Cart Table for the customer. -->
       <form action="" method="POST" id="form">
@@ -72,7 +60,7 @@
                     <label for="city" class="ps-4">City:</label>
                   </div>
                   <div class="col-6">
-                    <select class="form-select py-3" id="category" name="city">
+                    <select class="form-select py-3" id="category" name="state">
                       <option selected disabled>State:</option>
                       <option value="AL">Alabama</option>
                       <option value="AK">Alaska</option>
@@ -135,7 +123,7 @@
                       class="form-control"
                       id="zip"
                       placeholder="ZIP:"
-                      name="zip"
+                      name="zip_code"
                       required
                     />
                     <label for="zip" class="ps-4">ZIP:</label>
@@ -147,7 +135,7 @@
                       id="house_numb"
                       placeholder="House #:"
                       min="0"
-                      name="house_num"
+                      name="house_number"
                       required
                     />
                     <label for="house_numb" class="ps-4">House #:</label>
